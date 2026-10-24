@@ -1,0 +1,11 @@
+@model SolicitudesInternas.Models.Usuario
+@{
+    ViewBag.Title = "Nuevo usuario";
+}
+
+<h2>Nuevo usuario</h2>
+
+@using (Html.BeginForm("Crear", "Usuarios", FormMethod.Post))
+{
+    @Html.Partial("_Formulario", Model)
+}

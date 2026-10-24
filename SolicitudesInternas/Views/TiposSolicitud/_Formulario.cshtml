@@ -1,0 +1,35 @@
+@model SolicitudesInternas.Models.TipoSolicitud
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.Id)
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nombre, new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Descripcion, new { @class = "control-label col-md-2" })
+        <div class="col-md-5">
+            @Html.TextBoxFor(m => m.Descripcion, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <div class="checkbox">
+                <label>@Html.CheckBoxFor(m => m.Activo) Activa</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-5">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-link" })
+        </div>
+    </div>
+</div>

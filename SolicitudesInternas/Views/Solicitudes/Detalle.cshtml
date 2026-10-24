@@ -1,0 +1,165 @@
+@model SolicitudesInternas.ViewModels.SolicitudDetalleViewModel
+@{
+    var s = Model.Solicitud;
+    ViewBag.Title = "Solicitud #" + s.Id;
+}
+
+<h2>
+    Solicitud #@s.Id
+    <small>
+        <span class="@s.Estado.ClaseCss()">@s.Estado.Descripcion()</span>
+        <span class="@s.Prioridad.ClaseCss()">Prioridad @s.Prioridad.Descripcion()</span>
+    </small>
+</h2>
+
+<p>@Html.ActionLink("« Volver al listado", "Index", null, new { @class = "btn btn-default btn-sm" })</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Datos de la solicitud</div>
+            <table class="table">
+                <tr><th style="width: 35%;">Solicitante</th><td>@s.Solicitante.Nombre (@s.Solicitante.Departamento)</td></tr>
+                <tr><th>Categoría</th><td>@s.TipoSolicitud.Nombre</td></tr>
+                <tr><th>Responsable</th><td>@(s.Responsable != null ? s.Responsable.Nombre : "Sin asignar")</td></tr>
+                <tr><th>Creada</th><td>@s.FechaCreacion.ToString("dd/MM/yyyy HH:mm")</td></tr>
+                <tr>
+                    <th>Resuelta</th>
+                    <td>@(s.FechaResolucion.HasValue ? s.FechaResolucion.Value.ToString("dd/MM/yyyy HH:mm") : "—")</td>
+                </tr>
+                <tr>
+                    <th>Cerrada</th>
+                    <td>@(s.FechaCierre.HasValue ? s.FechaCierre.Value.ToString("dd/MM/yyyy HH:mm") : "—")</td>
+                </tr>
+            </table>
+            <div class="panel-body">
+                <strong>Descripción</strong>
+                <pre class="texto">@s.Descripcion</pre>
+                <strong>Solución</strong>
+                @if (s.TieneSolucion)
+                {
+                    <pre class="texto">@s.Solucion</pre>
+                }
+                else
+                {
+                    <p class="text-muted">Aún no se ha registrado una solución.</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        @if (s.EstaCerrada)
+        {
+            <div class="alert alert-info">
+                Esta solicitud está <strong>cerrada</strong> y no admite modificaciones. Solo puede consultarse su historial.
+            </div>
+        }
+        else
+        {
+            <div class="panel panel-primary">
+                <div class="panel-heading">Operaciones</div>
+                <div class="panel-body">
+
+                    <h5><strong>Asignar / reasignar</strong></h5>
+                    @using (Html.BeginForm("Asignar", "Solicitudes", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@s.Id" />
+                        <div class="form-group">
+                            @Html.DropDownList("ResponsableId", Model.Responsables, "-- Seleccione responsable --", new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="Comentario" class="form-control" placeholder="Comentario (opcional)" />
+                        </div>
+                        <button type="submit" class="btn btn-default btn-sm">Guardar asignación</button>
+                    }
+                    <hr />
+
+                    <h5><strong>Cambiar prioridad</strong></h5>
+                    @using (Html.BeginForm("CambiarPrioridad", "Solicitudes", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@s.Id" />
+                        <div class="form-group">
+                            @Html.DropDownList("Prioridad", Model.Prioridades, new { @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="Motivo" class="form-control" placeholder="Motivo del cambio" />
+                        </div>
+                        <button type="submit" class="btn btn-default btn-sm">Cambiar prioridad</button>
+                    }
+                    <hr />
+
+                    <h5><strong>Iniciar atención</strong></h5>
+                    @using (Html.BeginForm("IniciarProceso", "Solicitudes", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@s.Id" />
+                        <div class="form-group">
+                            <input type="text" name="Comentario" class="form-control" placeholder="Comentario (opcional)" />
+                        </div>
+                        <button type="submit" class="btn btn-default btn-sm">Pasar a En proceso</button>
+                    }
+                    <hr />
+
+                    <h5><strong>Registrar seguimiento</strong></h5>
+                    @using (Html.BeginForm("AgregarSeguimiento", "Solicitudes", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@s.Id" />
+                        <div class="form-group">
+                            <input type="text" name="Autor" class="form-control" placeholder="Quién registra" />
+                        </div>
+                        <div class="form-group">
+                            <textarea name="Comentario" rows="2" class="form-control" placeholder="Comentario del seguimiento"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-default btn-sm">Agregar seguimiento</button>
+                    }
+                    <hr />
+
+                    <h5><strong>Resolver</strong></h5>
+                    @using (Html.BeginForm("Resolver", "Solicitudes", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@s.Id" />
+                        <div class="form-group">
+                            <textarea name="Solucion" rows="3" class="form-control" placeholder="Describa la solución aplicada"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-sm">Registrar solución y resolver</button>
+                    }
+                    <hr />
+
+                    <h5><strong>Cerrar</strong></h5>
+                    @using (Html.BeginForm("Cerrar", "Solicitudes", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@s.Id" />
+                        <div class="form-group">
+                            <input type="text" name="Comentario" class="form-control" placeholder="Comentario de cierre (opcional)" />
+                        </div>
+                        <button type="submit" class="btn btn-danger btn-sm">Cerrar solicitud</button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<h3>Historial de seguimiento</h3>
+<table class="table table-condensed table-striped historial">
+    <thead>
+        <tr><th style="width: 150px;">Fecha</th><th style="width: 150px;">Evento</th><th style="width: 160px;">Autor</th><th>Detalle</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var seg in s.Seguimientos.OrderByDescending(x => x.Fecha).ThenByDescending(x => x.Id))
+        {
+            <tr>
+                <td>@seg.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@seg.Tipo.Descripcion()</td>
+                <td>@seg.Autor</td>
+                <td>@seg.Comentario</td>
+            </tr>
+        }
+    </tbody>
+</table>

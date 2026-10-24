@@ -1,0 +1,11 @@
+@{
+    ViewBag.Title = "No se pudo completar la operación";
+    var mensaje = ViewBag.Mensaje as string ?? "Ocurrió un error inesperado.";
+}
+
+<h2>No se pudo completar la operación</h2>
+<div class="alert alert-warning">@mensaje</div>
+<p>
+    @Html.ActionLink("Volver al inicio", "Index", "Home", null, new { @class = "btn btn-default" })
+    <a href="javascript:history.back()" class="btn btn-link">Regresar</a>
+</p>

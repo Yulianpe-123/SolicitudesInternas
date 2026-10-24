@@ -1,0 +1,11 @@
+@model SolicitudesInternas.Models.Responsable
+@{
+    ViewBag.Title = "Nuevo responsable";
+}
+
+<h2>Nuevo responsable</h2>
+
+@using (Html.BeginForm("Crear", "Responsables", FormMethod.Post))
+{
+    @Html.Partial("_Formulario", Model)
+}

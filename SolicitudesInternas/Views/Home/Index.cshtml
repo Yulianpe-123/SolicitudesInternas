@@ -1,0 +1,31 @@
+@model IDictionary<SolicitudesInternas.Models.EstadoSolicitud, int>
+@{
+    ViewBag.Title = "Inicio";
+    var total = Model.Values.Sum();
+}
+
+<div class="jumbotron" style="padding: 24px 30px;">
+    <h2 style="margin-top: 0;">Seguimiento de solicitudes internas</h2>
+    <p>Registre, asigne y de seguimiento a las solicitudes de equipos, accesos, permisos y soporte.</p>
+    <p>
+        @Html.ActionLink("Nueva solicitud", "Crear", "Solicitudes", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Ver todas (" + total + ")", "Index", "Solicitudes", null, new { @class = "btn btn-default" })
+    </p>
+</div>
+
+<div class="row">
+    @foreach (var par in Model)
+    {
+        <div class="col-sm-2 col-xs-6">
+            <div class="panel panel-default tarjeta-estado">
+                <div class="panel-body">
+                    <div class="numero">@par.Value</div>
+                    <span class="@par.Key.ClaseCss()">@par.Key.Descripcion()</span>
+                    <div style="margin-top: 8px;">
+                        @Html.ActionLink("Ver", "Index", "Solicitudes", new { estado = (int)par.Key }, null)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

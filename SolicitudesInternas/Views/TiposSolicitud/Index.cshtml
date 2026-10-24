@@ -1,0 +1,27 @@
+@model IEnumerable<SolicitudesInternas.Models.TipoSolicitud>
+@{
+    ViewBag.Title = "Categorías";
+}
+
+<h2>Categorías de solicitud</h2>
+<p>@Html.ActionLink("Nueva categoría", "Crear", null, new { @class = "btn btn-primary" })</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Nombre</th><th>Descripción</th><th>Estado</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+                <td>
+                    @if (item.Activo) { <span class="label label-success">Activa</span> }
+                    else { <span class="label label-default">Inactiva</span> }
+                </td>
+                <td>@Html.ActionLink("Editar", "Editar", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })</td>
+            </tr>
+        }
+    </tbody>
+</table>

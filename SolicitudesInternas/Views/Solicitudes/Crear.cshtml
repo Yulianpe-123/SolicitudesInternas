@@ -1,0 +1,53 @@
+@model SolicitudesInternas.ViewModels.SolicitudCrearViewModel
+@{
+    ViewBag.Title = "Nueva solicitud";
+}
+
+<h2>Nueva solicitud</h2>
+
+@using (Html.BeginForm("Crear", "Solicitudes", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(m => m.SolicitanteId, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(m => m.SolicitanteId, Model.Usuarios, "-- Seleccione --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SolicitanteId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.TipoSolicitudId, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(m => m.TipoSolicitudId, Model.Tipos, "-- Seleccione --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.TipoSolicitudId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Prioridad, new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EnumDropDownListFor(m => m.Prioridad, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Prioridad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Descripcion, new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextAreaFor(m => m.Descripcion, 5, 40, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <button type="submit" class="btn btn-primary">Registrar solicitud</button>
+                @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-link" })
+            </div>
+        </div>
+    </div>
+}

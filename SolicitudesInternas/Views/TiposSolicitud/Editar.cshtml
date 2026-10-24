@@ -1,0 +1,11 @@
+@model SolicitudesInternas.Models.TipoSolicitud
+@{
+    ViewBag.Title = "Editar categoría";
+}
+
+<h2>Editar categoría</h2>
+
+@using (Html.BeginForm("Editar", "TiposSolicitud", FormMethod.Post))
+{
+    @Html.Partial("_Formulario", Model)
+}

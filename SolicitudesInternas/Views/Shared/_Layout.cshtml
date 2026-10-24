@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Solicitudes Internas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" />
+    <style>
+        body { padding-top: 70px; padding-bottom: 40px; }
+        .tarjeta-estado { text-align: center; }
+        .tarjeta-estado .numero { font-size: 2.4em; font-weight: 600; }
+        .historial td { vertical-align: top; }
+        pre.texto { white-space: pre-wrap; background: #f8f8f8; border: 1px solid #e5e5e5; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @Html.ActionLink("Solicitudes Internas", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("Solicitudes", "Index", "Solicitudes")</li>
+                <li>@Html.ActionLink("Nueva solicitud", "Crear", "Solicitudes")</li>
+                <li>@Html.ActionLink("Usuarios", "Index", "Usuarios")</li>
+                <li>@Html.ActionLink("Responsables", "Index", "Responsables")</li>
+                <li>@Html.ActionLink("Categorías", "Index", "TiposSolicitud")</li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        @if (TempData["Exito"] != null)
+        {
+            <div class="alert alert-success">@TempData["Exito"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        @RenderBody()
+
+        <hr />
+        <footer><small class="text-muted">Sistema de Seguimiento de Solicitudes Internas &middot; Programación II</small></footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

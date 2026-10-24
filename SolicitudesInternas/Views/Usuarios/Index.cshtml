@@ -1,0 +1,28 @@
+@model IEnumerable<SolicitudesInternas.Models.Usuario>
+@{
+    ViewBag.Title = "Usuarios";
+}
+
+<h2>Usuarios</h2>
+<p>@Html.ActionLink("Nuevo usuario", "Crear", null, new { @class = "btn btn-primary" })</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr><th>Nombre</th><th>Correo</th><th>Departamento</th><th>Estado</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Correo</td>
+                <td>@item.Departamento</td>
+                <td>
+                    @if (item.Activo) { <span class="label label-success">Activo</span> }
+                    else { <span class="label label-default">Inactivo</span> }
+                </td>
+                <td>@Html.ActionLink("Editar", "Editar", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })</td>
+            </tr>
+        }
+    </tbody>
+</table>
